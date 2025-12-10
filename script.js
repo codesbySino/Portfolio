@@ -8,7 +8,7 @@ const projects = [
         year: '2025',
         materials: 'Maple, Glass',
         description: 'A minimalist nightstand inspired by Danish mid-century modern design. The piece features clean lines, thoughtful proportions, and a harmonious blend of solid maple and tempered glass. Each detail was carefully considered to create a functional yet aesthetically refined piece.',
-        videoSrc: 'videos/laid-back-nightstand/video.mp4', // Path to video file
+        videoSrc: 'project1.mp4', // Path to video file
         galleryImages: [
             { src: '', placeholder: 'Front View', class: '' },
             { src: '', placeholder: 'Detail Shot', class: '' },
@@ -24,7 +24,7 @@ const projects = [
         year: '2025',
         materials: 'Walnut',
         description: 'A study in simplicity and proportion. This side table explores the essence of form, stripping away the unnecessary to reveal the beauty of honest construction and quality materials.',
-        videoSrc: ['videos/minimalist-side-table/video.mov', 'videos/minimalist-side-table/video.mp4'],
+        videoSrc: 'videos/minimalist-side-table.mp4',
         galleryImages: [
             { src: '', placeholder: 'Overview', class: '' },
             { src: '', placeholder: 'Joinery Detail', class: 'tall' },
@@ -39,7 +39,7 @@ const projects = [
         year: '2024',
         materials: 'Reclaimed Urban Wood',
         description: 'Created during my internship at Just Be Woodsy, this dual-compartment picture frame transforms reclaimed urban trees into meaningful objects.',
-        videoSrc: ['videos/dual-compartment-frame/video.mov', 'videos/dual-compartment-frame/video.mp4'],
+        videoSrc: 'videos/dual-compartment-frame.mp4',
         galleryImages: [
             { src: '', placeholder: 'Final Product', class: 'wide' },
             { src: '', placeholder: 'Wood Selection', class: '' },
@@ -54,7 +54,7 @@ const projects = [
         year: '2025',
         materials: 'Oak, Steel',
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
-        videoSrc: ['videos/project4/video.mov', 'videos/project4/video.mp4'],
+        videoSrc: 'videos/project-four.mp4',
         galleryImages: [
             { src: '', placeholder: 'Image 1', class: '' },
             { src: '', placeholder: 'Image 2', class: '' },
@@ -68,7 +68,7 @@ const projects = [
         year: '2025',
         materials: 'Ash, Brass',
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
-        videoSrc: ['videos/project5/video.mov', 'videos/project5/video.mp4'],
+        videoSrc: 'videos/project-five.mp4',
         galleryImages: [
             { src: '', placeholder: 'Image 1', class: '' },
             { src: '', placeholder: 'Image 2', class: '' },
@@ -210,18 +210,14 @@ function initVideoAnimation(index, project) {
     video.muted = true;
     video.playsInline = true;
     video.preload = 'auto';
-    video.controls = false;  // No controls - scroll driven
+    video.controls = false;
     video.style.zIndex = '10';
     
-    // Handle single or multiple video sources
-    const videoSources = Array.isArray(project.videoSrc) ? project.videoSrc : [project.videoSrc];
-    
-    videoSources.forEach(src => {
-        const source = document.createElement('source');
-        source.src = src;
-        source.type = src.endsWith('.mov') ? 'video/quicktime' : 'video/mp4';
-        video.appendChild(source);
-    });
+    // Add video source
+    const source = document.createElement('source');
+    source.src = project.videoSrc;
+    source.type = 'video/mp4';
+    video.appendChild(source);
     
     frameDisplay.appendChild(video);
 
