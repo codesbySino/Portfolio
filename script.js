@@ -8,7 +8,7 @@ const projects = [
         year: '2025',
         materials: 'Maple, Glass',
         description: 'A minimalist nightstand inspired by Danish mid-century modern design. The piece features clean lines, thoughtful proportions, and a harmonious blend of solid maple and tempered glass. Each detail was carefully considered to create a functional yet aesthetically refined piece.',
-        videoSrc: 'https://raw.githubusercontent.com/codesbySino/Portfolio/main/project1.mp4', // Path to video file
+        videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project1.mp4', // Path to video file
         galleryImages: [
             { src: '', placeholder: 'Front View', class: '' },
             { src: '', placeholder: 'Detail Shot', class: '' },
@@ -24,7 +24,7 @@ const projects = [
         year: '2025',
         materials: 'Walnut',
         description: 'A study in simplicity and proportion. This side table explores the essence of form, stripping away the unnecessary to reveal the beauty of honest construction and quality materials.',
-        videoSrc: 'https://raw.githubusercontent.com/codesbySino/Portfolio/main/project2.mp4',
+        videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project2.mp4',
         galleryImages: [
             { src: '', placeholder: 'Overview', class: '' },
             { src: '', placeholder: 'Joinery Detail', class: 'tall' },
@@ -39,7 +39,7 @@ const projects = [
         year: '2024',
         materials: 'Reclaimed Urban Wood',
         description: 'Created during my internship at Just Be Woodsy, this dual-compartment picture frame transforms reclaimed urban trees into meaningful objects.',
-        videoSrc: 'https://raw.githubusercontent.com/codesbySino/Portfolio/main/project3.mp4',
+        videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project3.mp4',
         galleryImages: [
             { src: '', placeholder: 'Final Product', class: 'wide' },
             { src: '', placeholder: 'Wood Selection', class: '' },
@@ -54,7 +54,7 @@ const projects = [
         year: '2025',
         materials: 'Oak, Steel',
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
-        videoSrc: 'https://raw.githubusercontent.com/codesbySino/Portfolio/main/project4.mp4',
+        videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project4.mp4',
         galleryImages: [
             { src: '', placeholder: 'Image 1', class: '' },
             { src: '', placeholder: 'Image 2', class: '' },
@@ -68,7 +68,7 @@ const projects = [
         year: '2025',
         materials: 'Ash, Brass',
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
-        videoSrc: 'https://raw.githubusercontent.com/codesbySino/Portfolio/main/project5.mp4',
+        videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project5.mp4',
         galleryImages: [
             { src: '', placeholder: 'Image 1', class: '' },
             { src: '', placeholder: 'Image 2', class: '' },
