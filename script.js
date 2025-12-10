@@ -209,9 +209,10 @@ function initVideoAnimation(index, project) {
     video.className = 'project-video';
     video.muted = true;
     video.playsInline = true;
-    video.preload = 'auto';
+    video.preload = 'metadata';
     video.controls = false;
     video.style.zIndex = '10';
+    video.crossOrigin = 'anonymous';
     
     // Add video source
     const source = document.createElement('source');
@@ -235,16 +236,27 @@ function initVideoAnimation(index, project) {
     // Try different events to detect when video is ready
     video.addEventListener('loadedmetadata', hideLoading);
     video.addEventListener('canplay', hideLoading);
+    video.addEventListener('canplaythrough', hideLoading);
     
     // Fallback: hide loading after 3 seconds anyway
     setTimeout(() => {
         hideLoading();
     }, 3000);
 
-    // Error handling
+    // Error handling with detailed logging
     video.addEventListener('error', (e) => {
-        console.error(`Video ${index} error:`, e);
+        console.error(`Video ${index} error:`, {
+            error: e,
+            networkState: video.networkState,
+            readyState: video.readyState,
+            src: project.videoSrc
+        });
         hideLoading();
+    });
+    
+    // Log video load progress
+    video.addEventListener('loadstart', () => {
+        console.log(`Video ${index} loading started: ${project.videoSrc}`);
     });
 
     videoAnimations.push({
