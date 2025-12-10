@@ -92,6 +92,10 @@ let bubbles = [];
 let hasScrolled = false;
 let videoAnimations = [];
 
+// Detect iOS
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 // Initialize
 function init() {
     createBubbles();
@@ -99,6 +103,17 @@ function init() {
     setupScrollAnimations();
     setupMobileMenu();
     setupNavigation();
+    
+    // iOS workaround: trigger video load on first user interaction
+    if (isIOS) {
+        document.addEventListener('touchstart', () => {
+            videoAnimations.forEach(anim => {
+                if (anim.video && !anim.video.src) {
+                    anim.video.load();
+                }
+            });
+        }, { once: true });
+    }
 }
 
 // Create project bubbles with dynamic circular positioning
@@ -209,10 +224,15 @@ function initVideoAnimation(index, project) {
     video.className = 'project-video';
     video.muted = true;
     video.playsInline = true;
-    video.preload = 'metadata';
+    video.preload = 'none';
     video.controls = false;
     video.style.zIndex = '10';
+    video.style.width = '100%';
+    video.style.height = 'auto';
+    video.style.display = 'block';
     video.crossOrigin = 'anonymous';
+    video.setAttribute('webkit-playsinline', 'webkit-playsinline');
+    video.setAttribute('playsinline', 'playsinline');
     
     // Add video source
     const source = document.createElement('source');
@@ -245,11 +265,21 @@ function initVideoAnimation(index, project) {
 
     // Error handling with detailed logging
     video.addEventListener('error', (e) => {
-        console.error(`Video ${index} error:`, {
+        const errorCode = video.error ? video.error.code : 'unknown';
+        const errorMessage = {
+            1: 'MEDIA_ERR_ABORTED',
+            2: 'MEDIA_ERR_NETWORK',
+            3: 'MEDIA_ERR_DECODE',
+            4: 'MEDIA_ERR_SRC_NOT_SUPPORTED'
+        }[errorCode] || 'Unknown';
+        
+        console.error(`Video ${index} error - ${errorMessage}:`, {
             error: e,
             networkState: video.networkState,
             readyState: video.readyState,
-            src: project.videoSrc
+            src: project.videoSrc,
+            isIOS: isIOS,
+            isMobile: isMobile
         });
         hideLoading();
     });
@@ -258,6 +288,11 @@ function initVideoAnimation(index, project) {
     video.addEventListener('loadstart', () => {
         console.log(`Video ${index} loading started: ${project.videoSrc}`);
     });
+    
+    // Force load on iOS
+    if (isIOS) {
+        video.load();
+    }
 
     videoAnimations.push({
         container,
