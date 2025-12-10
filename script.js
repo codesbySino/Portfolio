@@ -234,10 +234,20 @@ function initVideoAnimation(index, project) {
     video.setAttribute('webkit-playsinline', 'webkit-playsinline');
     video.setAttribute('playsinline', 'playsinline');
     
+    // Use MOV for iOS, MP4 for others
+    let videoSrc = project.videoSrc;
+    let videoType = 'video/mp4';
+    
+    if (isIOS) {
+        // Replace .mp4 with .mov for iOS
+        videoSrc = project.videoSrc.replace('.mp4', '.mov');
+        videoType = 'video/quicktime';
+    }
+    
     // Add video source
     const source = document.createElement('source');
-    source.src = project.videoSrc;
-    source.type = 'video/mp4';
+    source.src = videoSrc;
+    source.type = videoType;
     video.appendChild(source);
     
     frameDisplay.appendChild(video);
