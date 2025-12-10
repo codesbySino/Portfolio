@@ -219,6 +219,7 @@ function initVideoAnimation(index, project) {
     source.type = 'video/mp4';
     video.appendChild(source);
     
+    console.log(`Loading video ${index}:`, project.videoSrc);
     frameDisplay.appendChild(video);
 
     // Remove loading indicator
@@ -235,6 +236,8 @@ function initVideoAnimation(index, project) {
     // Try different events to detect when video is ready
     video.addEventListener('loadedmetadata', hideLoading);
     video.addEventListener('canplay', hideLoading);
+    video.addEventListener('loadedmetadata', () => console.log(`Video ${index} metadata loaded`));
+    video.addEventListener('canplay', () => console.log(`Video ${index} can play`));
     
     // Fallback: hide loading after 3 seconds anyway
     setTimeout(() => {
@@ -244,6 +247,8 @@ function initVideoAnimation(index, project) {
     // Error handling
     video.addEventListener('error', (e) => {
         console.error(`Video ${index} error:`, e);
+        console.error(`Video ${index} error code:`, video.error?.code);
+        console.error(`Video ${index} source src:`, project.videoSrc);
         hideLoading();
     });
 
