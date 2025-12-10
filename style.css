@@ -252,7 +252,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--color-charcoal);
+    background: #000000;
     overflow: hidden;
 }
 
@@ -263,6 +263,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
+    background: #000000;
 }
 
 .frame-image {
@@ -279,11 +280,13 @@ body {
 }
 
 .project-video {
-    max-width: 90%;
-    max-height: 80vh;
-    object-fit: contain;
     width: 100%;
-    height: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    background: #000000;
+    position: relative;
+    z-index: 10;
 }
 
 .frame-counter {

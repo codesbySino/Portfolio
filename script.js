@@ -24,7 +24,7 @@ const projects = [
         year: '2025',
         materials: 'Walnut',
         description: 'A study in simplicity and proportion. This side table explores the essence of form, stripping away the unnecessary to reveal the beauty of honest construction and quality materials.',
-        videoSrc: 'videos/minimalist-side-table/video.mp4',
+        videoSrc: ['videos/minimalist-side-table/video.mov', 'videos/minimalist-side-table/video.mp4'],
         galleryImages: [
             { src: '', placeholder: 'Overview', class: '' },
             { src: '', placeholder: 'Joinery Detail', class: 'tall' },
@@ -38,8 +38,8 @@ const projects = [
         category: 'Product Design',
         year: '2024',
         materials: 'Reclaimed Urban Wood',
-        description: 'Created during my internship at Just Be Woodsy, this dual-compartment picture frame transforms reclaimed urban trees into meaningful objects. The design celebrates the unique character of each piece of wood while providing a functional display solution.',
-        videoSrc: 'videos/dual-compartment-frame/video.mp4',
+        description: 'Created during my internship at Just Be Woodsy, this dual-compartment picture frame transforms reclaimed urban trees into meaningful objects.',
+        videoSrc: ['videos/dual-compartment-frame/video.mov', 'videos/dual-compartment-frame/video.mp4'],
         galleryImages: [
             { src: '', placeholder: 'Final Product', class: 'wide' },
             { src: '', placeholder: 'Wood Selection', class: '' },
@@ -54,7 +54,7 @@ const projects = [
         year: '2025',
         materials: 'Oak, Steel',
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
-        videoSrc: 'videos/project4/video.mp4',
+        videoSrc: ['videos/project4/video.mov', 'videos/project4/video.mp4'],
         galleryImages: [
             { src: '', placeholder: 'Image 1', class: '' },
             { src: '', placeholder: 'Image 2', class: '' },
@@ -68,7 +68,7 @@ const projects = [
         year: '2025',
         materials: 'Ash, Brass',
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
-        videoSrc: 'videos/project5/video.mp4',
+        videoSrc: ['videos/project5/video.mov', 'videos/project5/video.mp4'],
         galleryImages: [
             { src: '', placeholder: 'Image 1', class: '' },
             { src: '', placeholder: 'Image 2', class: '' },
@@ -207,26 +207,54 @@ function initVideoAnimation(index, project) {
     const video = document.createElement('video');
     video.id = `video${index}`;
     video.className = 'project-video';
-    video.src = project.videoSrc;
     video.muted = true;
     video.playsInline = true;
-    video.preload = 'metadata';
-    video.style.maxWidth = '90%';
-    video.style.maxHeight = '80vh';
-    video.style.objectFit = 'contain';
+    video.preload = 'auto';
+    video.controls = false;  // No controls - scroll driven
+    video.style.zIndex = '10';
+    
+    // Handle single or multiple video sources
+    const videoSources = Array.isArray(project.videoSrc) ? project.videoSrc : [project.videoSrc];
+    
+    videoSources.forEach(src => {
+        const source = document.createElement('source');
+        source.src = src;
+        source.type = src.endsWith('.mov') ? 'video/quicktime' : 'video/mp4';
+        video.appendChild(source);
+    });
     
     frameDisplay.appendChild(video);
 
     // Remove loading indicator
+    let loaded = false;
+    
+    const hideLoading = () => {
+        if (!loaded) {
+            loaded = true;
+            const loading = frameDisplay.querySelector('.frame-loading');
+            if (loading) loading.style.display = 'none';
+        }
+    };
+
+    // Try different events to detect when video is ready
+    video.addEventListener('loadedmetadata', hideLoading);
+    video.addEventListener('canplay', hideLoading);
+    
+    // Fallback: hide loading after 3 seconds anyway
     setTimeout(() => {
-        const loading = frameDisplay.querySelector('.frame-loading');
-        if (loading) loading.style.display = 'none';
-    }, 500);
+        hideLoading();
+    }, 3000);
+
+    // Error handling
+    video.addEventListener('error', (e) => {
+        console.error(`Video ${index} error:`, e);
+        hideLoading();
+    });
 
     videoAnimations.push({
         container,
         video,
-        isPlaying: false
+        isLoaded: false
     });
 }
 
@@ -267,18 +295,32 @@ function handleScroll() {
         }
     }
 
-    // Video animations - play when in view
+    // Video animations - scrub through video on scroll
     videoAnimations.forEach((anim) => {
         const rect = anim.container.getBoundingClientRect();
-        const isInView = rect.top <= 0 && rect.bottom >= windowHeight;
+        const windowHeight = window.innerHeight;
+        const containerHeight = anim.container.offsetHeight;
+        const scrollableHeight = containerHeight - windowHeight;
         
-        if (isInView && !anim.isPlaying) {
-            anim.video.play();
-            anim.isPlaying = true;
-        } else if (!isInView && anim.isPlaying) {
-            anim.video.pause();
-            anim.video.currentTime = 0;
-            anim.isPlaying = false;
+        // Try to get duration, set isLoaded when duration is available
+        if (anim.video.duration > 0 && !anim.isLoaded) {
+            anim.isLoaded = true;
+        }
+        
+        // Always try to scrub if we're in view, even if still loading
+        if (rect.top <= 0 && rect.bottom >= 0) {
+            // Calculate scroll progress through this section
+            const scrollProgress = scrollableHeight > 0 ? Math.abs(rect.top) / scrollableHeight : 0;
+            const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
+            
+            // Set video time based on scroll position if duration is available
+            if (anim.video.duration > 0) {
+                try {
+                    anim.video.currentTime = clampedProgress * anim.video.duration;
+                } catch (e) {
+                    // Video might not be ready yet
+                }
+            }
         }
     });
 }
