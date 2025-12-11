@@ -203,6 +203,8 @@ function initVideoAnimation(index, project) {
     const frameDisplay = document.getElementById(`frameDisplay${index}`);
     const container = document.querySelector(`.frame-animation-container[data-project-index="${index}"]`);
     
+    console.log(`Initializing video ${index}:`, project.title, project.videoSrc);
+    
     // Create video element
     const video = document.createElement('video');
     video.id = `video${index}`;
@@ -211,6 +213,7 @@ function initVideoAnimation(index, project) {
     video.playsInline = true;
     video.preload = 'auto';
     video.controls = false;
+    video.crossOrigin = 'anonymous';
     video.style.zIndex = '10';
     
     // Add video source
@@ -229,12 +232,14 @@ function initVideoAnimation(index, project) {
             loaded = true;
             const loading = frameDisplay.querySelector('.frame-loading');
             if (loading) loading.style.display = 'none';
+            console.log(`Video ${index} loaded`);
         }
     };
 
     // Try different events to detect when video is ready
     video.addEventListener('loadedmetadata', hideLoading);
     video.addEventListener('canplay', hideLoading);
+    video.addEventListener('durationchange', hideLoading);
     
     // Fallback: hide loading after 3 seconds anyway
     setTimeout(() => {
@@ -244,6 +249,9 @@ function initVideoAnimation(index, project) {
     // Error handling
     video.addEventListener('error', (e) => {
         console.error(`Video ${index} error:`, e);
+        console.error('Video src:', project.videoSrc);
+        console.error('Network state:', video.networkState);
+        console.error('Ready state:', video.readyState);
         hideLoading();
     });
 
