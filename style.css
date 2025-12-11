@@ -780,3 +780,23 @@ body {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+/* Error state for video loading */
+.frame-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: rgba(250, 248, 245, 0.6);
+    text-align: center;
+}
+
+.frame-error svg {
+    opacity: 0.5;
+}
+
+.frame-error span {
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
