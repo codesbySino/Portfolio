@@ -8,7 +8,7 @@ const projects = [
         year: '2025',
         materials: 'Maple, Glass',
         description: 'A minimalist nightstand inspired by Danish mid-century modern design. The piece features clean lines, thoughtful proportions, and a harmonious blend of solid maple and tempered glass. Each detail was carefully considered to create a functional yet aesthetically refined piece.',
-        videoSrc: 'https://corsproxy.io/?https://github.com/codesbySino/Portfolio/releases/download/v1/project1.mp4', // Path to video file
+        videoSrc: 'https://raw.githubusercontent.com/codesbySino/Portfolio/main/project1.mp4', // Path to video file
         galleryImages: [
             { src: '', placeholder: 'Front View', class: '' },
             { src: '', placeholder: 'Detail Shot', class: '' },
@@ -24,7 +24,7 @@ const projects = [
         year: '2025',
         materials: 'Walnut',
         description: 'A study in simplicity and proportion. This side table explores the essence of form, stripping away the unnecessary to reveal the beauty of honest construction and quality materials.',
-        videoSrc: 'https://corsproxy.io/?https://github.com/codesbySino/Portfolio/releases/download/v1/project2.mp4',
+        videoSrc: 'https://raw.githubusercontent.com/codesbySino/Portfolio/main/minimalist-side-table.mp4',
         galleryImages: [
             { src: '', placeholder: 'Overview', class: '' },
             { src: '', placeholder: 'Joinery Detail', class: 'tall' },
@@ -39,7 +39,7 @@ const projects = [
         year: '2024',
         materials: 'Reclaimed Urban Wood',
         description: 'Created during my internship at Just Be Woodsy, this dual-compartment picture frame transforms reclaimed urban trees into meaningful objects.',
-        videoSrc: 'https://corsproxy.io/?https://github.com/codesbySino/Portfolio/releases/download/v1/project3.mp4',
+        videoSrc: 'https://raw.githubusercontent.com/codesbySino/Portfolio/main/dual-compartment-frame.mp4',
         galleryImages: [
             { src: '', placeholder: 'Final Product', class: 'wide' },
             { src: '', placeholder: 'Wood Selection', class: '' },
@@ -54,7 +54,7 @@ const projects = [
         year: '2025',
         materials: 'Oak, Steel',
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
-        videoSrc: 'https://corsproxy.io/?https://github.com/codesbySino/Portfolio/releases/download/v1/project4.mp4',
+        videoSrc: 'https://raw.githubusercontent.com/codesbySino/Portfolio/main/project-four.mp4',
         galleryImages: [
             { src: '', placeholder: 'Image 1', class: '' },
             { src: '', placeholder: 'Image 2', class: '' },
@@ -68,7 +68,7 @@ const projects = [
         year: '2025',
         materials: 'Ash, Brass',
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
-        videoSrc: 'https://corsproxy.io/?https://github.com/codesbySino/Portfolio/releases/download/v1/project5.mp4',
+        videoSrc: 'https://raw.githubusercontent.com/codesbySino/Portfolio/main/project-five.mp4',
         galleryImages: [
             { src: '', placeholder: 'Image 1', class: '' },
             { src: '', placeholder: 'Image 2', class: '' },
@@ -219,7 +219,6 @@ function initVideoAnimation(index, project) {
     source.type = 'video/mp4';
     video.appendChild(source);
     
-    console.log(`Loading video ${index}:`, project.videoSrc);
     frameDisplay.appendChild(video);
 
     // Remove loading indicator
@@ -236,8 +235,6 @@ function initVideoAnimation(index, project) {
     // Try different events to detect when video is ready
     video.addEventListener('loadedmetadata', hideLoading);
     video.addEventListener('canplay', hideLoading);
-    video.addEventListener('loadedmetadata', () => console.log(`Video ${index} metadata loaded`));
-    video.addEventListener('canplay', () => console.log(`Video ${index} can play`));
     
     // Fallback: hide loading after 3 seconds anyway
     setTimeout(() => {
@@ -247,8 +244,6 @@ function initVideoAnimation(index, project) {
     // Error handling
     video.addEventListener('error', (e) => {
         console.error(`Video ${index} error:`, e);
-        console.error(`Video ${index} error code:`, video.error?.code);
-        console.error(`Video ${index} source src:`, project.videoSrc);
         hideLoading();
     });
 
