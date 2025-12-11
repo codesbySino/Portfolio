@@ -91,6 +91,7 @@ const mobileMenuLinks = document.querySelectorAll('.mobile-menu-links a');
 let bubbles = [];
 let hasScrolled = false;
 let videoAnimations = [];
+let videosUnlocked = false;
 
 // Initialize
 function init() {
@@ -99,6 +100,35 @@ function init() {
     setupScrollAnimations();
     setupMobileMenu();
     setupNavigation();
+    setupMobileVideoUnlock();
+}
+
+// Mobile: Unlock videos on first user interaction (required for iOS)
+function setupMobileVideoUnlock() {
+    const unlockVideos = () => {
+        if (videosUnlocked) return;
+        videosUnlocked = true;
+
+        videoAnimations.forEach((anim) => {
+            // Try to play and immediately pause to "unlock" the video
+            const playPromise = anim.video.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    anim.video.pause();
+                    anim.video.currentTime = 0;
+                }).catch(() => {
+                    // Autoplay was prevented, but that's okay
+                });
+            }
+        });
+
+        // Remove listeners after unlock
+        document.removeEventListener('touchstart', unlockVideos);
+        document.removeEventListener('click', unlockVideos);
+    };
+
+    document.addEventListener('touchstart', unlockVideos, { once: true });
+    document.addEventListener('click', unlockVideos, { once: true });
 }
 
 // Create project bubbles with dynamic circular positioning
@@ -202,27 +232,35 @@ function createProjectSections() {
 function initVideoAnimation(index, project) {
     const frameDisplay = document.getElementById(`frameDisplay${index}`);
     const container = document.querySelector(`.frame-animation-container[data-project-index="${index}"]`);
-    
+
     console.log(`Initializing video ${index}:`, project.title, project.videoSrc);
-    
+
     // Create video element
     const video = document.createElement('video');
     video.id = `video${index}`;
     video.className = 'project-video';
     video.muted = true;
     video.playsInline = true;
-    video.preload = 'auto';
+    video.preload = 'metadata'; // Use metadata for mobile (less data)
     video.controls = false;
     // Note: crossOrigin removed - GitHub releases don't support CORS
     video.style.zIndex = '10';
-    
+
+    // iOS Safari compatibility
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+    video.setAttribute('muted', '');
+
     // Add video source
     const source = document.createElement('source');
     source.src = project.videoSrc;
     source.type = 'video/mp4';
     video.appendChild(source);
-    
+
     frameDisplay.appendChild(video);
+
+    // Explicitly load video (important for mobile)
+    video.load();
 
     // Remove loading indicator
     let loaded = false;
