@@ -213,7 +213,7 @@ function initVideoAnimation(index, project) {
     video.playsInline = true;
     video.preload = 'auto';
     video.controls = false;
-    video.crossOrigin = 'anonymous';
+    // Note: crossOrigin removed - GitHub releases don't support CORS
     video.style.zIndex = '10';
     
     // Add video source
