@@ -203,7 +203,8 @@ function initVideoAnimation(index, project) {
     const frameDisplay = document.getElementById(`frameDisplay${index}`);
     const container = document.querySelector(`.frame-animation-container[data-project-index="${index}"]`);
     
-    console.log(`Initializing video ${index}:`, project.title, project.videoSrc);
+    const isMobile = window.innerWidth <= 768;
+    console.log(`Initializing video ${index} (Mobile: ${isMobile}):`, project.title, project.videoSrc);
     
     // Create video element
     const video = document.createElement('video');
@@ -211,9 +212,10 @@ function initVideoAnimation(index, project) {
     video.className = 'project-video';
     video.muted = true;
     video.playsInline = true;
-    video.preload = 'auto';
+    video.preload = isMobile ? 'metadata' : 'auto'; // Load metadata only on mobile to save bandwidth
     video.controls = false;
     video.crossOrigin = 'anonymous';
+    video.webkit-playsinline = true; // For iOS compatibility
     video.style.zIndex = '10';
     
     // Add video source
@@ -223,6 +225,7 @@ function initVideoAnimation(index, project) {
     video.appendChild(source);
     
     frameDisplay.appendChild(video);
+    console.log(`Video element created and appended for project ${index}`);
 
     // Remove loading indicator
     let loaded = false;
@@ -232,26 +235,45 @@ function initVideoAnimation(index, project) {
             loaded = true;
             const loading = frameDisplay.querySelector('.frame-loading');
             if (loading) loading.style.display = 'none';
-            console.log(`Video ${index} loaded`);
+            console.log(`Video ${index} loaded - hiding loading indicator`);
         }
     };
 
     // Try different events to detect when video is ready
-    video.addEventListener('loadedmetadata', hideLoading);
-    video.addEventListener('canplay', hideLoading);
-    video.addEventListener('durationchange', hideLoading);
-    
-    // Fallback: hide loading after 3 seconds anyway
-    setTimeout(() => {
+    video.addEventListener('loadedmetadata', () => {
+        console.log(`Video ${index}: loadedmetadata event fired, duration: ${video.duration}`);
         hideLoading();
-    }, 3000);
+    });
+    video.addEventListener('canplay', () => {
+        console.log(`Video ${index}: canplay event fired`);
+        hideLoading();
+    });
+    video.addEventListener('durationchange', () => {
+        console.log(`Video ${index}: durationchange event fired, duration: ${video.duration}`);
+        hideLoading();
+    });
+    video.addEventListener('loadstart', () => {
+        console.log(`Video ${index}: loadstart event fired`);
+    });
+    
+    // Fallback: hide loading after 5 seconds anyway
+    const timeoutId = setTimeout(() => {
+        console.log(`Video ${index}: Timeout reached, hiding loading indicator`);
+        hideLoading();
+    }, 5000);
 
-    // Error handling
+    // Error handling with detailed logging
     video.addEventListener('error', (e) => {
-        console.error(`Video ${index} error:`, e);
+        clearTimeout(timeoutId);
+        const errorMessage = `Video ${index} error event: ${e.type}`;
+        console.error(errorMessage);
         console.error('Video src:', project.videoSrc);
-        console.error('Network state:', video.networkState);
-        console.error('Ready state:', video.readyState);
+        console.error('Network state:', video.networkState, '(0=NETWORK_EMPTY, 1=NETWORK_IDLE, 2=NETWORK_LOADING, 3=NETWORK_NO_SOURCE)');
+        console.error('Ready state:', video.readyState, '(0=HAVE_NOTHING, 1=HAVE_METADATA, 2=HAVE_CURRENT_DATA, 3=HAVE_FUTURE_DATA, 4=HAVE_ENOUGH_DATA)');
+        if (video.error) {
+            console.error('Error code:', video.error.code, '(1=ABORTED, 2=NETWORK, 3=DECODE, 4=SRC_NOT_SUPPORTED)');
+            console.error('Error message:', video.error.message);
+        }
         hideLoading();
     });
 
