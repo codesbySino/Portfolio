@@ -281,11 +281,15 @@ body {
 
 .project-video {
     width: 100%;
-    height: auto;
-    object-fit: cover;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100vh;
+    object-fit: contain;
     display: block;
     background: #000000;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     z-index: 10;
 }
 
@@ -766,6 +770,7 @@ body {
     align-items: center;
     gap: 1rem;
     color: rgba(250, 248, 245, 0.5);
+    z-index: 5;
 }
 
 .frame-loading-spinner {
