@@ -1,48 +1,29 @@
 # Portfolio Website Setup Guide
 
 ## Overview
-This is a single-page scrolling portfolio website with dynamic bubble navigation and scroll-triggered 60-frame animations for each project.
+This is a single-page scrolling portfolio website with dynamic bubble navigation and scroll-triggered video animations for each project.
 
 ## File Structure
 
 ```
 portfolio/
 ├── index.html          # Main website file
+├── style.css           # Styles
+├── script.js           # JavaScript logic
 ├── README.md           # This file
-└── frames/             # Create this folder for animation frames
-    ├── nightstand/     # Project 1 frames
-    │   ├── frame_001.jpg
-    │   ├── frame_002.jpg
-    │   └── ... (up to frame_060.jpg)
-    ├── sidetable/      # Project 2 frames
-    ├── pictureframe/   # Project 3 frames
-    ├── project4/       # Project 4 frames
-    └── project5/       # Project 5 frames
+├── CNAME               # Custom domain (sinodesigns.com)
+└── videos/             # Create this folder for project videos (optional)
+    ├── project1.mp4
+    ├── project2.mp4
+    └── ...
 ```
 
-## Adding Your Animation Frames
+## How It Works
 
-### Frame Naming Convention
-Each project needs 60 frames named sequentially:
-- `frame_001.jpg`
-- `frame_002.jpg`
-- ...
-- `frame_060.jpg`
+The portfolio uses scroll-triggered video scrubbing to animate through each project. As you scroll through a project section, the video plays frame-by-frame based on your scroll position.
 
-### Recommended Frame Export Settings (Blender)
-- **Resolution**: 1920x1080 or higher
-- **Format**: JPEG (for file size) or PNG (for quality)
-- **Quality**: 85-95%
-- **Background**: Transparent or dark (#1A1816) to match the site
-
-### Adding Frames
-1. Create the `frames` folder in the same directory as `index.html`
-2. Create a subfolder for each project (matching the `framePath` in the config)
-3. Export your 60-frame sequences from Blender into each folder
-
-## Configuring Projects
-
-Edit the `projects` array in `index.html` (around line 520) to customize:
+### Video Configuration
+Each project in `script.js` has a `videoSrc` property pointing to the video file:
 
 ```javascript
 const projects = [
@@ -53,8 +34,7 @@ const projects = [
         year: '2025',                 // Year created
         materials: 'Oak, Steel',      // Materials used
         description: 'Your description here...',
-        frameCount: 60,               // Number of animation frames
-        framePath: 'frames/folder/',  // Path to frame images
+        videoSrc: 'path/to/video.mp4', // Path to MP4 video
         galleryImages: [
             { src: 'path/to/image.jpg', placeholder: 'Description', class: '' },
             { src: '', placeholder: 'Placeholder Text', class: 'wide' },
@@ -65,8 +45,28 @@ const projects = [
 ];
 ```
 
-### Adding/Removing Projects
-The bubble navigation automatically recalculates positions based on the number of projects. Simply add or remove entries from the `projects` array.
+### Video Hosting Options
+
+1. **GitHub Releases** (current setup):
+   - Upload videos to GitHub Releases
+   - Use the download URL: `https://github.com/username/repo/releases/download/v1/video.mp4`
+
+2. **Local Files**:
+   - Place videos in the project folder
+   - Use relative paths: `videos/project1.mp4`
+
+3. **External CDN**:
+   - Host on services like Cloudinary, Vimeo (with direct links), etc.
+
+### Recommended Video Settings
+- **Resolution**: 1920x1080 or 1280x720
+- **Format**: MP4 (H.264 codec)
+- **Duration**: 3-10 seconds works best for scroll scrubbing
+- **File Size**: Under 5MB per video for optimal loading
+
+## Adding/Removing Projects
+
+The bubble navigation automatically recalculates positions based on the number of projects. Simply add or remove entries from the `projects` array in `script.js`.
 
 ## Adding Gallery Images
 
@@ -87,29 +87,17 @@ galleryImages: [
 
 ## Customizing Contact Information
 
-In the Contact section (around line 290), update:
-- Email: `href="mailto:your.email@example.com"`
-- Phone: `href="tel:+1234567890"`
-- Social links: Update the `href` attributes
+In `index.html`, update the Contact section (around line 94):
+- Email: `href="mailto:your.email@example.com"` → your actual email
+- Phone: `href="tel:+1234567890"` → your actual phone number
+- Social links: Update the `href` attributes to your profiles
 
 ## Customizing About Section
 
-Update the About section (around line 265) with your:
+Update the About section in `index.html` (around line 62) with your:
 - Photo (replace the placeholder div with an `<img>` tag)
 - Bio text
 - Education, experience, and focus details
-
-## Performance Tips
-
-### Optimizing Frame Images
-1. **Compress images**: Use TinyPNG or similar
-2. **Consider WebP**: Better compression, wide browser support
-3. **Lazy loading**: Already implemented for gallery images
-
-### For Better Performance
-- Keep frame images under 200KB each
-- Total animation sequence should ideally be under 12MB per project
-- Use JPEG for renders, PNG only if transparency needed
 
 ## Browser Support
 - Chrome (latest)
@@ -119,14 +107,18 @@ Update the About section (around line 265) with your:
 
 ## Deployment
 
-### Option 1: Static Hosting
-Upload the entire folder to any static host:
-- GitHub Pages
+### Option 1: GitHub Pages
+1. Push to your GitHub repository
+2. Go to Settings → Pages
+3. Select your branch and save
+
+### Option 2: Other Static Hosts
+Upload the entire folder to:
 - Netlify
 - Vercel
 - Cloudflare Pages
 
-### Option 2: Local Testing
+### Option 3: Local Testing
 Open `index.html` directly in a browser, or use a local server:
 ```bash
 # Python 3
@@ -138,10 +130,11 @@ npx serve
 
 ## Troubleshooting
 
-### Frames Not Loading
-- Check file paths match the `framePath` in config
-- Ensure frame names follow `frame_XXX.jpg` format
-- Check browser console for 404 errors
+### Videos Not Loading
+- Check that video URLs are accessible (try opening in a new browser tab)
+- For GitHub releases, ensure the release is public
+- Check browser console for CORS errors
+- Verify file paths are correct
 
 ### Bubbles Not Positioned Correctly
 - Try refreshing the page
@@ -149,14 +142,14 @@ npx serve
 - Resize window to trigger recalculation
 
 ### Scroll Animation Stuttering
-- Reduce frame image file sizes
-- Consider reducing to 30 frames for slower connections
+- Reduce video file sizes
+- Use lower resolution videos
 - Test in incognito mode (no extensions)
 
 ## Customization
 
 ### Colors
-Edit CSS variables at the top of the `<style>` block:
+Edit CSS variables in `style.css`:
 ```css
 :root {
     --color-bg: #F5F3EF;        /* Main background */
@@ -171,7 +164,7 @@ The site uses:
 - **Cormorant Garamond**: Display/headings
 - **DM Sans**: Body text
 
-Change via Google Fonts link and `--font-display` / `--font-body` variables.
+Change via Google Fonts link in `index.html` and update `--font-display` / `--font-body` variables in `style.css`.
 
 ---
 

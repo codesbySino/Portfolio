@@ -246,13 +246,28 @@ function initVideoAnimation(index, project) {
         hideLoading();
     }, 3000);
 
-    // Error handling
+    // Error handling with user-visible feedback
     video.addEventListener('error', (e) => {
         console.error(`Video ${index} error:`, e);
         console.error('Video src:', project.videoSrc);
         console.error('Network state:', video.networkState);
         console.error('Ready state:', video.readyState);
-        hideLoading();
+
+        // Show user-friendly error message
+        const loading = frameDisplay.querySelector('.frame-loading');
+        if (loading) {
+            loading.innerHTML = `
+                <div class="frame-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span>Video unavailable</span>
+                </div>
+            `;
+            loading.style.display = 'flex';
+        }
     });
 
     videoAnimations.push({
