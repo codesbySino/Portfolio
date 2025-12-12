@@ -2,8 +2,8 @@
 // Add your projects here - the system will automatically calculate bubble positions
 const projects = [
     {
-        id: 'laid-back-nightstand',
-        title: 'Laid Back Nightstand',
+        id: 'chai-table-set',
+        title: 'Chai Table Set',
         category: 'Furniture Design',
         year: '2025',
         materials: 'Maple, Glass',
@@ -18,8 +18,8 @@ const projects = [
         ]
     },
     {
-        id: 'minimalist-side-table',
-        title: 'Minimalist Side Table',
+        id: 'laid-back-nightstand',
+        title: 'Laid Back Nightstand',
         category: 'Furniture Design',
         year: '2025',
         materials: 'Walnut',
@@ -33,8 +33,8 @@ const projects = [
         ]
     },
     {
-        id: 'dual-compartment-frame',
-        title: 'Dual Compartment Frame',
+        id: 'christophers-mugs',
+        title: 'Christopher\'s Mugs',
         category: 'Product Design',
         year: '2024',
         materials: 'Reclaimed Urban Wood',
@@ -48,8 +48,8 @@ const projects = [
         ]
     },
     {
-        id: 'project-four',
-        title: 'Project Four',
+        id: 'a-bookshelf',
+        title: 'A Bookshelf',
         category: 'Furniture Design',
         year: '2025',
         materials: 'Oak, Steel',
@@ -62,8 +62,8 @@ const projects = [
         ]
     },
     {
-        id: 'project-five',
-        title: 'Project Five',
+        id: 'mushroom-glass-lamp',
+        title: 'Mushroom Glass Lamp',
         category: 'Furniture Design',
         year: '2025',
         materials: 'Ash, Brass',
@@ -73,6 +73,20 @@ const projects = [
             { src: '', placeholder: 'Image 1', class: '' },
             { src: '', placeholder: 'Image 2', class: '' },
             { src: '', placeholder: 'Image 3', class: 'wide' }
+        ]
+    },
+    {
+        id: 'orbit-chair',
+        title: 'Orbit Chair',
+        category: 'Furniture Design',
+        year: '2025',
+        materials: 'Walnut, Leather',
+        description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
+        videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project6.mp4',
+        galleryImages: [
+            { src: '', placeholder: 'Image 1', class: '' },
+            { src: '', placeholder: 'Image 2', class: '' },
+            { src: '', placeholder: 'Image 3', class: '' }
         ]
     }
 ];
