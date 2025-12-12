@@ -387,8 +387,9 @@ body {
 
 .project-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: clamp(1rem, 3vw, 2rem);
+    align-items: start;
 }
 
 .gallery-item {
@@ -396,12 +397,11 @@ body {
     overflow: hidden;
     border-radius: 4px;
     background: var(--color-bg-warm);
-    aspect-ratio: 4/3;
+    transition: transform 0.3s var(--transition-smooth);
 }
 
 .gallery-item.tall {
     grid-row: span 2;
-    aspect-ratio: auto;
 }
 
 .gallery-item.wide {
@@ -410,18 +410,23 @@ body {
 
 .gallery-item img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    display: block;
+    object-fit: contain;
     transition: transform 0.6s var(--transition-smooth);
 }
 
+.gallery-item:hover {
+    transform: translateY(-4px);
+}
+
 .gallery-item:hover img {
-    transform: scale(1.03);
+    transform: scale(1.02);
 }
 
 .gallery-placeholder {
     width: 100%;
-    height: 100%;
+    min-height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -430,6 +435,7 @@ body {
     font-size: 0.8rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    aspect-ratio: 4/3;
 }
 
 /* About Section */
@@ -671,6 +677,15 @@ body {
 
     .gallery-item.wide {
         grid-column: span 1;
+    }
+
+    .gallery-item.tall {
+        grid-row: span 1;
+    }
+
+    .project-gallery {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .project-title-overlay {
