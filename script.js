@@ -10,7 +10,7 @@ const projects = [
         description: 'A minimalist nightstand inspired by Danish mid-century modern design. The piece features clean lines, thoughtful proportions, and a harmonious blend of solid maple and tempered glass. Each detail was carefully considered to create a functional yet aesthetically refined piece.',
         videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project1.mp4', // Path to video file
         galleryImages: [
-            { src: '', placeholder: 'Front View', class: '' },
+            { src: './project1-1.jpg', placeholder: 'Front View', class: '' },
             { src: '', placeholder: 'Detail Shot', class: '' },
             { src: '', placeholder: 'In Context', class: 'wide' },
             { src: '', placeholder: 'Construction', class: '' },
