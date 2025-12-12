@@ -617,6 +617,11 @@ body {
     letter-spacing: 0.1em;
 }
 
+/* Mobile Menu Button - Hidden by default on desktop */
+.mobile-menu-btn {
+    display: none;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .nav {

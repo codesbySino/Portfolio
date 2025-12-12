@@ -247,8 +247,6 @@ function initVideoAnimation(index, project) {
     const frameDisplay = document.getElementById(`frameDisplay${index}`);
     const container = document.querySelector(`.frame-animation-container[data-project-index="${index}"]`);
 
-    console.log(`Initializing video ${index}:`, project.title, project.videoSrc);
-
     // Create video element
     const video = document.createElement('video');
     video.id = `video${index}`;
@@ -284,7 +282,6 @@ function initVideoAnimation(index, project) {
             loaded = true;
             const loading = frameDisplay.querySelector('.frame-loading');
             if (loading) loading.style.display = 'none';
-            console.log(`Video ${index} loaded`);
         }
     };
 
@@ -299,12 +296,7 @@ function initVideoAnimation(index, project) {
     }, 3000);
 
     // Error handling with user-visible feedback
-    video.addEventListener('error', (e) => {
-        console.error(`Video ${index} error:`, e);
-        console.error('Video src:', project.videoSrc);
-        console.error('Network state:', video.networkState);
-        console.error('Ready state:', video.readyState);
-
+    video.addEventListener('error', () => {
         // Show user-friendly error message
         const loading = frameDisplay.querySelector('.frame-loading');
         if (loading) {
