@@ -458,6 +458,13 @@ body {
     overflow: hidden;
 }
 
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .about-image::after {
     content: '';
     position: absolute;
