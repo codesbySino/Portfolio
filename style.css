@@ -50,6 +50,7 @@ body {
     text-decoration: none;
     display: flex;
     align-items: center;
+    color: var(--color-cream);
 }
 
 .nav-logo-img {
