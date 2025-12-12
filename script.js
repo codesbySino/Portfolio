@@ -28,7 +28,7 @@ const projects = [
         description: 'A study in simplicity and proportion. This side table explores the essence of form, stripping away the unnecessary to reveal the beauty of honest construction and quality materials.',
         videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project2.mp4',
         imagePrefix: 'project2',
-        imageCount: 0, // Set to number of images when you add them
+        imageCount: 4, // Updated: ready for project2-1.jpg through project2-4.jpg
         galleryLayout: [
             { placeholder: 'Overview', class: '' },
             { placeholder: 'Joinery Detail', class: 'tall' },
@@ -45,7 +45,7 @@ const projects = [
         description: 'Created during my internship at Just Be Woodsy, this dual-compartment picture frame transforms reclaimed urban trees into meaningful objects.',
         videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project3.mp4',
         imagePrefix: 'project3',
-        imageCount: 0,
+        imageCount: 4, // Updated: ready for project3-1.jpg through project3-4.jpg
         galleryLayout: [
             { placeholder: 'Final Product', class: 'wide' },
             { placeholder: 'Wood Selection', class: '' },
@@ -62,7 +62,7 @@ const projects = [
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
         videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project4.mp4',
         imagePrefix: 'project4',
-        imageCount: 0,
+        imageCount: 3, // Updated: ready for project4-1.jpg through project4-3.jpg
         galleryLayout: [
             { placeholder: 'Image 1', class: '' },
             { placeholder: 'Image 2', class: '' },
@@ -78,7 +78,7 @@ const projects = [
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
         videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project5.mp4',
         imagePrefix: 'project5',
-        imageCount: 0,
+        imageCount: 3, // Updated: ready for project5-1.jpg through project5-3.jpg
         galleryLayout: [
             { placeholder: 'Image 1', class: '' },
             { placeholder: 'Image 2', class: '' },
@@ -94,7 +94,7 @@ const projects = [
         description: 'Add your project description here. Describe the design intent, materials used, and the story behind the piece.',
         videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project6.mp4',
         imagePrefix: 'project6',
-        imageCount: 0,
+        imageCount: 3, // Updated: ready for project6-1.jpg through project6-3.jpg
         galleryLayout: [
             { placeholder: 'Image 1', class: '' },
             { placeholder: 'Image 2', class: '' },
