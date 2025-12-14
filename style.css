@@ -11,6 +11,10 @@
     --font-body: 'DM Sans', -apple-system, sans-serif;
     --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Orbit configuration - controls bubble positioning around center text */
+    --bubble-orbit-multiplier: 0.85;
+    --bubble-min-orbit-radius: 220px;
 }
 
 * {
@@ -134,8 +138,9 @@ body {
 
 .bubble-container {
     position: relative;
-    width: min(80vw, 600px);
-    height: min(80vw, 600px);
+    /* Use vmin to maintain square aspect ratio that scales with viewport */
+    width: min(85vmin, 700px);
+    height: min(85vmin, 700px);
 }
 
 .project-bubble {
@@ -635,8 +640,38 @@ body {
     display: none;
 }
 
+/* Responsive orbit adjustments for different viewport sizes */
+@media (max-width: 1200px) {
+    :root {
+        --bubble-orbit-multiplier: 0.82;
+        --bubble-min-orbit-radius: 200px;
+    }
+}
+
+@media (max-width: 900px) {
+    :root {
+        --bubble-orbit-multiplier: 0.78;
+        --bubble-min-orbit-radius: 180px;
+    }
+
+    .bubble-container {
+        width: min(90vmin, 550px);
+        height: min(90vmin, 550px);
+    }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
+    :root {
+        --bubble-orbit-multiplier: 0.75;
+        --bubble-min-orbit-radius: 150px;
+    }
+
+    .bubble-container {
+        width: min(95vmin, 450px);
+        height: min(95vmin, 450px);
+    }
+
     .nav {
         padding: 1rem 1.5rem;
     }
