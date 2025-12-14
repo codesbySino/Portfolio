@@ -198,11 +198,42 @@ function setupMobileVideoUnlock() {
     document.addEventListener('click', unlockVideos, { once: true });
 }
 
+// Calculate orbit radius that ensures bubbles don't overlap with center text
+function calculateOrbitRadius() {
+    const containerSize = Math.min(bubbleContainer.offsetWidth, bubbleContainer.offsetHeight);
+    const centerHalf = containerSize / 2;
+
+    // Get CSS custom properties for orbit configuration
+    const styles = getComputedStyle(document.documentElement);
+    const orbitMultiplier = parseFloat(styles.getPropertyValue('--bubble-orbit-multiplier')) || 0.85;
+    const minOrbitRadius = parseFloat(styles.getPropertyValue('--bubble-min-orbit-radius')) || 220;
+
+    // Calculate the hero text dimensions to ensure proper clearance
+    const heroTextWidth = heroText ? heroText.offsetWidth : 0;
+    const heroTextHeight = heroText ? heroText.offsetHeight : 0;
+
+    // The bubbles at ~30° and ~150° angles need horizontal clearance from the subtitle
+    // Calculate minimum radius needed based on half the hero text width plus bubble radius and padding
+    const bubbleRadius = (window.innerWidth <= 768 ? 80 : 120) / 2;
+    const horizontalClearance = (heroTextWidth / 2) + bubbleRadius + 30; // 30px extra padding
+
+    // For bubbles at 30° from horizontal, the horizontal component is cos(30°) ≈ 0.866
+    // So we need: radius * cos(30°) >= horizontalClearance
+    // Therefore: radius >= horizontalClearance / cos(30°) ≈ horizontalClearance / 0.866
+    const minRadiusForTextClearance = horizontalClearance / 0.866;
+
+    // Calculate radius based on container size
+    const containerBasedRadius = centerHalf * orbitMultiplier;
+
+    // Use the maximum of: container-based radius, minimum CSS radius, and text clearance radius
+    return Math.max(containerBasedRadius, minOrbitRadius, minRadiusForTextClearance);
+}
+
 // Create project bubbles with dynamic circular positioning
 function createBubbles() {
     const centerX = bubbleContainer.offsetWidth / 2;
     const centerY = bubbleContainer.offsetHeight / 2;
-    const radius = Math.min(centerX, centerY) * 0.7;
+    const radius = calculateOrbitRadius();
     const angleStep = (2 * Math.PI) / projects.length;
     const startAngle = -Math.PI / 2;
 
@@ -228,7 +259,7 @@ function createBubbles() {
         bubble.style.position = 'absolute';
         bubble.style.transform = `translate(${x - bubbleSize / 2}px, ${y - bubbleSize / 2}px)`;
         bubble.addEventListener('click', () => handleBubbleClick(index));
-        
+
         bubbleContainer.appendChild(bubble);
         bubbles.push(bubble);
     });
