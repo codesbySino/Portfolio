@@ -198,35 +198,47 @@ function setupMobileVideoUnlock() {
     document.addEventListener('click', unlockVideos, { once: true });
 }
 
-// Calculate orbit radius that ensures bubbles don't overlap with center text
+// Get the actual bubble size from CSS
+function getBubbleSize() {
+    // Create a temporary bubble to measure its computed size
+    const tempBubble = document.createElement('div');
+    tempBubble.className = 'project-bubble';
+    tempBubble.style.visibility = 'hidden';
+    tempBubble.style.position = 'absolute';
+    document.body.appendChild(tempBubble);
+    const size = tempBubble.offsetWidth;
+    document.body.removeChild(tempBubble);
+    return size || (window.innerWidth <= 768 ? 75 : 85);
+}
+
+// Calculate orbit radius that fits within container while maintaining clearance from center text
 function calculateOrbitRadius() {
     const containerSize = Math.min(bubbleContainer.offsetWidth, bubbleContainer.offsetHeight);
     const centerHalf = containerSize / 2;
+    const bubbleSize = getBubbleSize();
 
     // Get CSS custom properties for orbit configuration
     const styles = getComputedStyle(document.documentElement);
-    const orbitMultiplier = parseFloat(styles.getPropertyValue('--bubble-orbit-multiplier')) || 0.85;
-    const minOrbitRadius = parseFloat(styles.getPropertyValue('--bubble-min-orbit-radius')) || 220;
+    const orbitMultiplier = parseFloat(styles.getPropertyValue('--bubble-orbit-multiplier')) || 0.42;
+    const minOrbitRadius = parseFloat(styles.getPropertyValue('--bubble-min-orbit-radius')) || 160;
 
-    // Calculate the hero text dimensions to ensure proper clearance
+    // Calculate maximum radius that keeps bubbles within container
+    // Bubbles at top/bottom need: radius + bubbleSize/2 <= centerHalf
+    const maxRadiusForFit = centerHalf - (bubbleSize / 2) - 10; // 10px safety margin
+
+    // Calculate minimum radius to clear the hero text
     const heroTextWidth = heroText ? heroText.offsetWidth : 0;
-    const heroTextHeight = heroText ? heroText.offsetHeight : 0;
-
-    // The bubbles at ~30° and ~150° angles need horizontal clearance from the subtitle
-    // Calculate minimum radius needed based on half the hero text width plus bubble radius and padding
-    const bubbleRadius = (window.innerWidth <= 768 ? 80 : 120) / 2;
-    const horizontalClearance = (heroTextWidth / 2) + bubbleRadius + 30; // 30px extra padding
-
-    // For bubbles at 30° from horizontal, the horizontal component is cos(30°) ≈ 0.866
-    // So we need: radius * cos(30°) >= horizontalClearance
-    // Therefore: radius >= horizontalClearance / cos(30°) ≈ horizontalClearance / 0.866
-    const minRadiusForTextClearance = horizontalClearance / 0.866;
+    const horizontalClearance = (heroTextWidth / 2) + (bubbleSize / 2) + 15; // 15px padding
+    const minRadiusForTextClearance = horizontalClearance / 0.866; // cos(30°)
 
     // Calculate radius based on container size
     const containerBasedRadius = centerHalf * orbitMultiplier;
 
-    // Use the maximum of: container-based radius, minimum CSS radius, and text clearance radius
-    return Math.max(containerBasedRadius, minOrbitRadius, minRadiusForTextClearance);
+    // Use the minimum of container-fit and maximum of (container-based, min-radius, text-clearance)
+    const desiredRadius = Math.max(containerBasedRadius, minOrbitRadius, minRadiusForTextClearance);
+
+    // Ensure we don't exceed container bounds - prioritize fitting all bubbles
+    return Math.min(desiredRadius, maxRadiusForFit);
 }
 
 // Create project bubbles with dynamic circular positioning
@@ -234,6 +246,7 @@ function createBubbles() {
     const centerX = bubbleContainer.offsetWidth / 2;
     const centerY = bubbleContainer.offsetHeight / 2;
     const radius = calculateOrbitRadius();
+    const bubbleSize = getBubbleSize();
     const angleStep = (2 * Math.PI) / projects.length;
     const startAngle = -Math.PI / 2;
 
@@ -255,7 +268,6 @@ function createBubbles() {
         `;
 
         // Position bubble using transform for better performance
-        const bubbleSize = window.innerWidth <= 768 ? 80 : 120;
         bubble.style.position = 'absolute';
         bubble.style.transform = `translate(${x - bubbleSize / 2}px, ${y - bubbleSize / 2}px)`;
         bubble.addEventListener('click', () => handleBubbleClick(index));
@@ -476,7 +488,7 @@ function handleScroll() {
 function animateBubbles(progress) {
     const centerX = bubbleContainer.offsetWidth / 2;
     const centerY = bubbleContainer.offsetHeight / 2;
-    const bubbleSize = window.innerWidth <= 768 ? 80 : 120;
+    const bubbleSize = getBubbleSize();
     const verticalSpacing = bubbleSize + 20;
     const scale = 1 - progress * 0.3;
     const opacity = 1 - (progress * 0.8);
@@ -484,7 +496,7 @@ function animateBubbles(progress) {
     bubbles.forEach((bubble, index) => {
         const originalX = parseFloat(bubble.dataset.originalX);
         const originalY = parseFloat(bubble.dataset.originalY);
-        
+
         // Calculate target position (vertical arrangement 1,2,3,4,5 from top to bottom)
         const targetX = centerX;
         const targetY = (index * verticalSpacing) + bubbleSize;
