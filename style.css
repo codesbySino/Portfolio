@@ -417,8 +417,7 @@ body {
 }
 
 .gallery-item.hero {
-    width: 65%;
-    max-width: 780px;
+    width: 100%;
 }
 
 .gallery-item img {
@@ -734,11 +733,6 @@ body {
 
     .project-gallery {
         gap: 0.75rem;
-    }
-
-    .gallery-item.hero {
-        width: 100%;
-        max-width: none;
     }
 
     .gallery-grid {
