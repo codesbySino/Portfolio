@@ -318,11 +318,23 @@ function createProjectSections() {
                     <p class="project-description">${project.description}</p>
                 </div>
                 <div class="project-gallery">
-                    ${getGalleryImages(project).map((img, index) => `
-                        <div class="gallery-item ${img.class} ${index === 0 ? 'hero' : ''}">
-                            ${img.src ? `<img src="${img.src}" alt="${img.placeholder}" loading="lazy">` : `<div class="gallery-placeholder">${img.placeholder}</div>`}
-                        </div>
-                    `).join('')}
+                    ${(() => {
+                        const images = getGalleryImages(project);
+                        const heroImage = images[0];
+                        const gridImages = images.slice(1);
+                        return `
+                            <div class="gallery-item ${heroImage.class} hero">
+                                ${heroImage.src ? `<img src="${heroImage.src}" alt="${heroImage.placeholder}" loading="lazy">` : `<div class="gallery-placeholder">${heroImage.placeholder}</div>`}
+                            </div>
+                            <div class="gallery-grid">
+                                ${gridImages.map((img) => `
+                                    <div class="gallery-item ${img.class}">
+                                        ${img.src ? `<img src="${img.src}" alt="${img.placeholder}" loading="lazy">` : `<div class="gallery-placeholder">${img.placeholder}</div>`}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    })()}
                 </div>
             </div>
         `;
