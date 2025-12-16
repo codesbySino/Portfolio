@@ -7,7 +7,7 @@ const projects = [
         category: 'Furniture Design',
         year: '2024',
         materials: 'Plywood and Cast Acrylic',
-        description: 'A sturdy, elegant table designed to flat-pack for easy transport. The piece features a cast acrylic top that conceals an original painting within its surface, creating a deeply personal art display that's integrated into daily ritual. The plywood base components can break down flat when needed It can be fabricated using the CNC. The result is a functional piece that has a personal meaning.',
+        description: 'A sturdy, elegant table designed to flat-pack for easy transport. The piece features a cast acrylic top that conceals an original painting within its surface, creating a deeply personal art display that\'s integrated into daily ritual. The plywood base components can break down flat when needed It can be fabricated using the CNC. The result is a functional piece that has a personal meaning.',
         videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project1.mp4', // Path to video file
         imagePrefix: 'project1', // Prefix for image files (project1-1.jpg, project1-2.jpg, etc.)
         imageCount: 5, // Number of images (just update this number when you add more!)
@@ -64,7 +64,7 @@ const projects = [
         description: 'A compact, modular shelving unit made from plywood, designed for a simple and easy assembly. Built using the table saw and Its modular design allows for an easy transport.',
         videoSrc: 'https://github.com/codesbySino/Portfolio/releases/download/v1/project4.mp4',
         imagePrefix: 'project4',
-        imageExtension: 'jpeg',
+        imageExtension: 'jpg',
         imageCount: 5,
         galleryLayout: [
             { placeholder: 'Image 1', class: '' },
