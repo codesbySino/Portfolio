@@ -318,8 +318,8 @@ function createProjectSections() {
                     <p class="project-description">${project.description}</p>
                 </div>
                 <div class="project-gallery">
-                    ${getGalleryImages(project).map(img => `
-                        <div class="gallery-item ${img.class}">
+                    ${getGalleryImages(project).map((img, index) => `
+                        <div class="gallery-item ${img.class} ${index === 0 ? 'hero' : ''}">
                             ${img.src ? `<img src="${img.src}" alt="${img.placeholder}" loading="lazy">` : `<div class="gallery-placeholder">${img.placeholder}</div>`}
                         </div>
                     `).join('')}

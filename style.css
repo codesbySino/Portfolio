@@ -413,6 +413,10 @@ body {
     grid-column: span 2;
 }
 
+.gallery-item.hero {
+    grid-column: 1 / -1;
+}
+
 .gallery-item img {
     width: 100%;
     height: auto;
@@ -724,7 +728,8 @@ body {
         grid-template-columns: 1fr;
     }
 
-    .gallery-item.wide {
+    .gallery-item.wide,
+    .gallery-item.hero {
         grid-column: span 1;
     }
 
