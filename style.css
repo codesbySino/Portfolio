@@ -726,6 +726,10 @@ body {
         gap: 0.75rem;
     }
 
+    .gallery-item.hero {
+        grid-column: auto;
+    }
+
     .project-title-overlay {
         left: 1.5rem;
         bottom: 2rem;
