@@ -14,7 +14,7 @@ const projects = [
         galleryLayout: [
             { placeholder: 'Front View', class: '' },
             { placeholder: 'Detail Shot', class: '' },
-            { placeholder: 'In Context', class: 'wide' },
+            { placeholder: 'In Context', class: '' },
             { placeholder: 'Construction', class: '' },
             { placeholder: 'Materials', class: '' }
         ]
@@ -31,9 +31,9 @@ const projects = [
         imageCount: 5,
         galleryLayout: [
             { placeholder: 'Overview', class: '' },
-            { placeholder: 'Joinery Detail', class: 'tall', extension: 'png' },
+            { placeholder: 'Joinery Detail', class: '', extension: 'png' },
             { placeholder: 'Top View', class: '', extension: 'png' },
-            { placeholder: 'Process', class: 'wide', extension: 'png' },
+            { placeholder: 'Process', class: '', extension: 'png' },
             { placeholder: 'Detail', class: '', extension: 'png' }
         ]
     },
@@ -48,7 +48,7 @@ const projects = [
         imagePrefix: 'project3',
         imageCount: 5,
         galleryLayout: [
-            { placeholder: 'Final Product', class: 'wide' },
+            { placeholder: 'Final Product', class: '' },
             { placeholder: 'Wood Selection', class: '' },
             { placeholder: 'Manufacturing', class: '' },
             { placeholder: 'Detail', class: '' },
@@ -70,7 +70,7 @@ const projects = [
             { placeholder: 'Image 1', class: '' },
             { placeholder: 'Image 2', class: '', extension: 'jpg' },
             { placeholder: 'Image 3', class: '', extension: 'jpg' },
-            { placeholder: 'Image 4', class: 'wide', extension: 'jpg' },
+            { placeholder: 'Image 4', class: '', extension: 'jpg' },
             { placeholder: 'Image 5', class: '', extension: 'jpg' }
         ]
     },
@@ -87,7 +87,7 @@ const projects = [
         galleryLayout: [
             { placeholder: 'Image 1', class: '' },
             { placeholder: 'Image 2', class: '' },
-            { placeholder: 'Image 3', class: 'wide' },
+            { placeholder: 'Image 3', class: '' },
             { placeholder: 'Image 4', class: '' },
             { placeholder: 'Image 5', class: '' }
         ]
@@ -106,7 +106,7 @@ const projects = [
             { placeholder: 'Image 1', class: '' },
             { placeholder: 'Image 2', class: '' },
             { placeholder: 'Image 3', class: '' },
-            { placeholder: 'Image 4', class: 'wide' },
+            { placeholder: 'Image 4', class: '' },
             { placeholder: 'Image 5', class: '' }
         ]
     }
