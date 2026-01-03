@@ -291,11 +291,11 @@ function createPortraitBubble(centerX, centerY, bubbleSize) {
     portraitBubble.style.position = 'absolute';
     portraitBubble.style.transform = `translate(${centerX - bubbleSize / 2}px, ${centerY - bubbleSize / 2}px)`;
 
-    // Click to scroll to About section
+    // Click to jump to About section
     portraitBubble.addEventListener('click', () => {
         const aboutSection = document.getElementById('about');
         if (aboutSection) {
-            aboutSection.scrollIntoView({ behavior: 'smooth' });
+            aboutSection.scrollIntoView({ behavior: 'instant' });
         }
     });
 
@@ -567,9 +567,9 @@ function animateBubbles(progress) {
 function handleBubbleClick(index) {
     const project = projects[index];
     const projectSection = document.getElementById(project.id);
-    
+
     if (projectSection) {
-        projectSection.scrollIntoView({ behavior: 'smooth' });
+        projectSection.scrollIntoView({ behavior: 'instant' });
     }
 }
 
