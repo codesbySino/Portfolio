@@ -31,10 +31,10 @@ const projects = [
         imageCount: 5,
         galleryLayout: [
             { placeholder: 'Overview', class: '' },
-            { placeholder: 'Joinery Detail', class: '', extension: 'png' },
-            { placeholder: 'Top View', class: '', extension: 'png' },
-            { placeholder: 'Process', class: '', extension: 'png' },
-            { placeholder: 'Detail', class: '', extension: 'png' }
+            { placeholder: 'Joinery Detail', class: '' },
+            { placeholder: 'Top View', class: '' },
+            { placeholder: 'Process', class: '' },
+            { placeholder: 'Detail', class: '' }
         ]
     },
     {
