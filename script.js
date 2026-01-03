@@ -205,7 +205,20 @@ function getBubbleSize() {
     document.body.appendChild(tempBubble);
     const size = tempBubble.offsetWidth;
     document.body.removeChild(tempBubble);
-    return size || (window.innerWidth <= 768 ? 75 : 85);
+    return size || (window.innerWidth <= 768 ? 70 : 100);
+}
+
+// Get the portrait bubble size from CSS (larger than project bubbles)
+function getPortraitBubbleSize() {
+    // Create a temporary portrait bubble to measure its computed size
+    const tempBubble = document.createElement('div');
+    tempBubble.className = 'project-bubble portrait-bubble';
+    tempBubble.style.visibility = 'hidden';
+    tempBubble.style.position = 'absolute';
+    document.body.appendChild(tempBubble);
+    const size = tempBubble.offsetWidth;
+    document.body.removeChild(tempBubble);
+    return size || (window.innerWidth <= 768 ? 88 : 125);
 }
 
 // Calculate orbit radius that fits within container
@@ -239,11 +252,12 @@ function createBubbles() {
     const centerY = bubbleContainer.offsetHeight / 2;
     const radius = calculateOrbitRadius();
     const bubbleSize = getBubbleSize();
+    const portraitSize = getPortraitBubbleSize();
     const angleStep = (2 * Math.PI) / projects.length;
     const startAngle = -Math.PI / 2;
 
-    // Create center portrait bubble first
-    createPortraitBubble(centerX, centerY, bubbleSize);
+    // Create center portrait bubble first (uses larger portrait size)
+    createPortraitBubble(centerX, centerY, portraitSize);
 
     projects.forEach((project, index) => {
         const angle = startAngle + (index * angleStep);
@@ -273,19 +287,20 @@ function createBubbles() {
 }
 
 // Create portrait bubble in the center that scrolls to About section
-function createPortraitBubble(centerX, centerY, bubbleSize) {
+function createPortraitBubble(centerX, centerY, portraitSize) {
     const portraitBubble = document.createElement('div');
     portraitBubble.className = 'project-bubble portrait-bubble';
     portraitBubble.dataset.originalX = centerX;
     portraitBubble.dataset.originalY = centerY;
+    portraitBubble.dataset.portraitSize = portraitSize;
 
     portraitBubble.innerHTML = `
         <img src="./about-photo.jpg" alt="About Me" class="bubble-thumbnail portrait-thumbnail">
     `;
 
-    // Position at center
+    // Position at center (using portrait bubble size for centering)
     portraitBubble.style.position = 'absolute';
-    portraitBubble.style.transform = `translate(${centerX - bubbleSize / 2}px, ${centerY - bubbleSize / 2}px)`;
+    portraitBubble.style.transform = `translate(${centerX - portraitSize / 2}px, ${centerY - portraitSize / 2}px)`;
 
     // Click to jump to About section
     portraitBubble.addEventListener('click', () => {
@@ -553,10 +568,11 @@ function animateBubbles(progress) {
     if (portraitBubble) {
         const originalX = parseFloat(portraitBubble.dataset.originalX);
         const originalY = parseFloat(portraitBubble.dataset.originalY);
+        const portraitSize = parseFloat(portraitBubble.dataset.portraitSize) || getPortraitBubbleSize();
         const portraitOpacity = 1 - (progress * 1.2); // Fade out faster
         const portraitScale = 1 - progress * 0.4;
 
-        portraitBubble.style.transform = `translate(${originalX - bubbleSize / 2}px, ${originalY - bubbleSize / 2}px) scale(${Math.max(0.6, portraitScale)})`;
+        portraitBubble.style.transform = `translate(${originalX - portraitSize / 2}px, ${originalY - portraitSize / 2}px) scale(${Math.max(0.6, portraitScale)})`;
         portraitBubble.style.opacity = Math.max(0, portraitOpacity);
     }
 }

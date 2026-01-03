@@ -14,10 +14,13 @@
 
     /* Orbit configuration - controls bubble positioning around center text */
     --bubble-orbit-multiplier: 0.42;
-    --bubble-min-orbit-radius: 160px;
+    --bubble-min-orbit-radius: 180px;
 
     /* Backdrop width - scales proportionally with bubble size */
-    --bubble-backdrop-width: 5px;
+    --bubble-backdrop-width: 6px;
+
+    /* Portrait bubble size multiplier (larger than project bubbles) */
+    --portrait-bubble-scale: 1.25;
 }
 
 * {
@@ -116,19 +119,20 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 1400px;
-    padding: 0 clamp(2rem, 5vw, 6rem);
+    max-width: 1600px;
+    padding: 0 clamp(3rem, 6vw, 8rem);
     position: relative;
 }
 
 .hero-left {
     position: absolute;
     top: clamp(5rem, 10vh, 8rem);
-    left: clamp(2rem, 5vw, 6rem);
+    left: clamp(3rem, 8vw, 10rem);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    max-width: clamp(200px, 25vw, 350px);
 }
 
 .hero-right {
@@ -208,14 +212,14 @@ body {
 .bubble-container {
     position: relative;
     /* Use vh to ensure vertical fit within viewport, accounting for nav and scroll indicator */
-    width: min(55vh, 55vw, 450px);
-    height: min(55vh, 55vw, 450px);
+    width: min(60vh, 60vw, 520px);
+    height: min(60vh, 60vw, 520px);
 }
 
 .project-bubble {
     position: absolute;
-    width: clamp(70px, 12vw, 100px);
-    height: clamp(70px, 12vw, 100px);
+    width: clamp(80px, 13vw, 115px);
+    height: clamp(80px, 13vw, 115px);
     border-radius: 50%;
     background: var(--color-cream);
     border: 1px solid rgba(139, 115, 85, 0.2);
@@ -294,14 +298,17 @@ body {
     transform: scale(1.1);
 }
 
-/* Portrait bubble in center */
+/* Portrait bubble in center - larger than project bubbles */
 .portrait-bubble {
     z-index: 2;
     padding: 0;
     overflow: hidden;
     border: 2px solid rgba(139, 115, 85, 0.3);
+    /* Portrait bubble is 25% larger than project bubbles */
+    width: clamp(100px, 16.25vw, 144px);
+    height: clamp(100px, 16.25vw, 144px);
     box-shadow:
-        0 0 0 var(--bubble-backdrop-width) rgba(180, 175, 168, 0.6),
+        0 0 0 calc(var(--bubble-backdrop-width) * 1.2) rgba(180, 175, 168, 0.6),
         0 8px 30px rgba(44, 40, 36, 0.15),
         0 2px 8px rgba(44, 40, 36, 0.1);
 }
@@ -309,7 +316,7 @@ body {
 .portrait-bubble:hover {
     border-color: var(--color-accent);
     box-shadow:
-        0 0 0 var(--bubble-backdrop-width) rgba(180, 175, 168, 0.7),
+        0 0 0 calc(var(--bubble-backdrop-width) * 1.2) rgba(180, 175, 168, 0.7),
         0 12px 40px rgba(44, 40, 36, 0.2),
         0 4px 12px rgba(44, 40, 36, 0.12);
 }
@@ -761,18 +768,94 @@ body {
 }
 
 /* Responsive orbit adjustments for different viewport sizes */
-@media (max-width: 1200px) {
+
+/* Large desktop (1440px and above uses root defaults) */
+
+/* Desktop 1440px breakpoint */
+@media (max-width: 1440px) {
     :root {
-        --bubble-orbit-multiplier: 0.40;
-        --bubble-min-orbit-radius: 150px;
-        --bubble-backdrop-width: 4px;
+        --bubble-orbit-multiplier: 0.41;
+        --bubble-min-orbit-radius: 175px;
+        --bubble-backdrop-width: 6px;
+    }
+
+    .bubble-container {
+        width: min(58vh, 58vw, 500px);
+        height: min(58vh, 58vw, 500px);
+    }
+
+    .hero-left {
+        left: clamp(2.5rem, 6vw, 8rem);
     }
 }
 
+/* Desktop 1280px breakpoint */
+@media (max-width: 1280px) {
+    :root {
+        --bubble-orbit-multiplier: 0.40;
+        --bubble-min-orbit-radius: 165px;
+        --bubble-backdrop-width: 5px;
+    }
+
+    .bubble-container {
+        width: min(55vh, 55vw, 480px);
+        height: min(55vh, 55vw, 480px);
+    }
+
+    .project-bubble {
+        width: clamp(75px, 12vw, 105px);
+        height: clamp(75px, 12vw, 105px);
+    }
+
+    .portrait-bubble {
+        width: clamp(94px, 15vw, 131px);
+        height: clamp(94px, 15vw, 131px);
+    }
+
+    .hero-left {
+        left: clamp(2rem, 5vw, 6rem);
+    }
+}
+
+/* Tablet landscape / small desktop 1024px breakpoint */
+@media (max-width: 1024px) {
+    :root {
+        --bubble-orbit-multiplier: 0.39;
+        --bubble-min-orbit-radius: 150px;
+        --bubble-backdrop-width: 5px;
+    }
+
+    .bubble-container {
+        width: min(52vh, 52vw, 440px);
+        height: min(52vh, 52vw, 440px);
+    }
+
+    .project-bubble {
+        width: clamp(70px, 11vw, 95px);
+        height: clamp(70px, 11vw, 95px);
+    }
+
+    .portrait-bubble {
+        width: clamp(88px, 14vw, 119px);
+        height: clamp(88px, 14vw, 119px);
+    }
+
+    .hero-left {
+        top: clamp(4.5rem, 9vh, 7rem);
+        left: clamp(1.5rem, 4vw, 4rem);
+    }
+
+    .title-sans,
+    .title-serif {
+        font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+    }
+}
+
+/* Small tablet / large mobile 900px breakpoint */
 @media (max-width: 900px) {
     :root {
         --bubble-orbit-multiplier: 0.38;
-        --bubble-min-orbit-radius: 140px;
+        --bubble-min-orbit-radius: 135px;
         --bubble-backdrop-width: 4px;
     }
 
@@ -781,8 +864,19 @@ body {
         height: min(50vh, 50vw, 400px);
     }
 
+    .project-bubble {
+        width: clamp(65px, 10vw, 85px);
+        height: clamp(65px, 10vw, 85px);
+    }
+
+    .portrait-bubble {
+        width: clamp(82px, 12.5vw, 106px);
+        height: clamp(82px, 12.5vw, 106px);
+    }
+
     .hero-left {
         top: clamp(4rem, 8vh, 6rem);
+        left: clamp(1.5rem, 3vw, 3rem);
     }
 
     .title-sans,
@@ -836,6 +930,9 @@ body {
 
     .portrait-bubble {
         border-width: 2px;
+        /* Portrait still larger than project bubbles on mobile */
+        width: clamp(69px, 20vw, 88px);
+        height: clamp(69px, 20vw, 88px);
     }
 
     .hero-intro {
