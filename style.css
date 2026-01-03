@@ -106,9 +106,33 @@ body {
     pointer-events: none;
 }
 
+/* Two-Column Hero Layout */
+.hero-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1400px;
+    padding: 0 clamp(2rem, 5vw, 6rem);
+    gap: clamp(2rem, 5vw, 6rem);
+}
+
+.hero-left {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.hero-right {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .hero-text {
-    position: absolute;
-    text-align: center;
     z-index: 1;
     pointer-events: none;
     opacity: 1;
@@ -120,27 +144,67 @@ body {
 }
 
 .hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 4rem);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.1;
+}
+
+.title-line {
+    display: block;
+}
+
+.title-sans {
+    font-family: var(--font-body);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
     font-weight: 300;
-    letter-spacing: 0.02em;
-    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
     color: var(--color-text);
 }
 
-.hero-subtitle {
-    font-size: clamp(0.6rem, 1.2vw, 0.85rem);
+.title-serif {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
     font-weight: 300;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    color: var(--color-text);
+    margin-top: -0.1em;
+}
+
+/* Intro text below bubbles */
+.hero-intro {
+    text-align: center;
+    margin-top: 1.5rem;
+    opacity: 1;
+    transition: opacity 0.5s var(--transition-smooth);
+}
+
+.hero-intro.hidden {
+    opacity: 0;
+}
+
+.intro-greeting {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 400;
+    color: var(--color-text);
+    margin-bottom: 0.25rem;
+}
+
+.intro-tagline {
+    font-family: var(--font-body);
+    font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
     color: var(--color-text-light);
 }
 
 .bubble-container {
     position: relative;
     /* Use vh to ensure vertical fit within viewport, accounting for nav and scroll indicator */
-    width: min(75vh, 75vw, 550px);
-    height: min(75vh, 75vw, 550px);
+    width: min(55vh, 55vw, 450px);
+    height: min(55vh, 55vw, 450px);
 }
 
 .project-bubble {
@@ -706,8 +770,17 @@ body {
     }
 
     .bubble-container {
-        width: min(70vh, 70vw, 480px);
-        height: min(70vh, 70vw, 480px);
+        width: min(50vh, 50vw, 400px);
+        height: min(50vh, 50vw, 400px);
+    }
+
+    .hero-wrapper {
+        gap: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .title-sans,
+    .title-serif {
+        font-size: clamp(2rem, 4.5vw, 3.5rem);
     }
 }
 
@@ -715,30 +788,53 @@ body {
 @media (max-width: 768px) {
     :root {
         --bubble-orbit-multiplier: 0.38;
-        --bubble-min-orbit-radius: 120px;
+        --bubble-min-orbit-radius: 100px;
+    }
+
+    .hero-wrapper {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 0 1.5rem;
+    }
+
+    .hero-left {
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-title {
+        align-items: center;
+    }
+
+    .title-sans,
+    .title-serif {
+        font-size: clamp(1.8rem, 8vw, 2.8rem);
     }
 
     .bubble-container {
-        width: min(80vmin, 400px);
-        height: min(80vmin, 400px);
+        width: min(65vmin, 320px);
+        height: min(65vmin, 320px);
     }
 
     .project-bubble {
-        width: clamp(65px, 18vw, 85px);
-        height: clamp(65px, 18vw, 85px);
+        width: clamp(55px, 16vw, 70px);
+        height: clamp(55px, 16vw, 70px);
     }
 
     .portrait-bubble {
         border-width: 2px;
     }
 
-    .hero-title {
-        font-size: clamp(1.8rem, 6vw, 2.5rem);
+    .hero-intro {
+        margin-top: 1rem;
     }
 
-    .hero-subtitle {
-        font-size: clamp(0.55rem, 2vw, 0.7rem);
-        letter-spacing: 0.2em;
+    .intro-greeting {
+        font-size: clamp(1rem, 4vw, 1.2rem);
+    }
+
+    .intro-tagline {
+        font-size: clamp(0.65rem, 2.5vw, 0.8rem);
     }
 
     .nav {
