@@ -144,6 +144,7 @@ function getGalleryImages(project) {
 const bubbleContainer = document.getElementById('bubbleContainer');
 const projectSectionsContainer = document.getElementById('projectSections');
 const heroText = document.querySelector('.hero-text');
+const heroIntro = document.querySelector('.hero-intro');
 const scrollIndicator = document.querySelector('.scroll-indicator');
 const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
 const mobileMenu = document.querySelector('.mobile-menu');
@@ -207,7 +208,7 @@ function getBubbleSize() {
     return size || (window.innerWidth <= 768 ? 75 : 85);
 }
 
-// Calculate orbit radius that fits within container while maintaining clearance from center text
+// Calculate orbit radius that fits within container
 function calculateOrbitRadius() {
     const containerSize = Math.min(bubbleContainer.offsetWidth, bubbleContainer.offsetHeight);
     const centerHalf = containerSize / 2;
@@ -222,16 +223,11 @@ function calculateOrbitRadius() {
     // Bubbles at top/bottom need: radius + bubbleSize/2 <= centerHalf
     const maxRadiusForFit = centerHalf - (bubbleSize / 2) - 10; // 10px safety margin
 
-    // Calculate minimum radius to clear the hero text
-    const heroTextWidth = heroText ? heroText.offsetWidth : 0;
-    const horizontalClearance = (heroTextWidth / 2) + (bubbleSize / 2) + 15; // 15px padding
-    const minRadiusForTextClearance = horizontalClearance / 0.866; // cos(30°)
-
     // Calculate radius based on container size
     const containerBasedRadius = centerHalf * orbitMultiplier;
 
-    // Use the minimum of container-fit and maximum of (container-based, min-radius, text-clearance)
-    const desiredRadius = Math.max(containerBasedRadius, minOrbitRadius, minRadiusForTextClearance);
+    // Use the minimum of container-fit and maximum of (container-based, min-radius)
+    const desiredRadius = Math.max(containerBasedRadius, minOrbitRadius);
 
     // Ensure we don't exceed container bounds - prioritize fitting all bubbles
     return Math.min(desiredRadius, maxRadiusForFit);
@@ -482,14 +478,16 @@ function handleScroll() {
         const progress = Math.min(scrollY / (windowHeight * 0.3), 1);
         animateBubbles(progress);
         
-        // Fade hero text and scroll indicator
+        // Fade hero text, intro text, and scroll indicator
         if (progress > 0 && !hasScrolled) {
             hasScrolled = true;
             heroText.classList.add('hidden');
+            if (heroIntro) heroIntro.classList.add('hidden');
             scrollIndicator.classList.add('hidden');
         } else if (progress === 0 && hasScrolled) {
             hasScrolled = false;
             heroText.classList.remove('hidden');
+            if (heroIntro) heroIntro.classList.remove('hidden');
             scrollIndicator.classList.remove('hidden');
         }
     }
