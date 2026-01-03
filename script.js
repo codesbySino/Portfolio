@@ -246,21 +246,24 @@ function createBubbles() {
     const angleStep = (2 * Math.PI) / projects.length;
     const startAngle = -Math.PI / 2;
 
+    // Create center portrait bubble first
+    createPortraitBubble(centerX, centerY, bubbleSize);
+
     projects.forEach((project, index) => {
         const angle = startAngle + (index * angleStep);
         const x = centerX + radius * Math.cos(angle);
         const y = centerY + radius * Math.sin(angle);
 
         const bubble = document.createElement('div');
-        bubble.className = 'project-bubble';
+        bubble.className = 'project-bubble project-bubble-image';
         bubble.dataset.index = index;
         bubble.dataset.originalX = x;
         bubble.dataset.originalY = y;
+
+        // Use first image of each project as thumbnail
+        const thumbnailSrc = `./${project.imagePrefix}-1.jpg`;
         bubble.innerHTML = `
-            <div class="bubble-content">
-                <span class="bubble-number">${String(index + 1).padStart(2, '0')}</span>
-                <span class="bubble-title">${project.title.split(' ').slice(0, 2).join(' ')}</span>
-            </div>
+            <img src="${thumbnailSrc}" alt="${project.title}" class="bubble-thumbnail">
         `;
 
         // Position bubble using transform for better performance
@@ -271,6 +274,35 @@ function createBubbles() {
         bubbleContainer.appendChild(bubble);
         bubbles.push(bubble);
     });
+}
+
+// Create portrait bubble in the center that scrolls to About section
+function createPortraitBubble(centerX, centerY, bubbleSize) {
+    const portraitBubble = document.createElement('div');
+    portraitBubble.className = 'project-bubble portrait-bubble';
+    portraitBubble.dataset.originalX = centerX;
+    portraitBubble.dataset.originalY = centerY;
+
+    portraitBubble.innerHTML = `
+        <img src="./about-photo.jpg" alt="About Me" class="bubble-thumbnail portrait-thumbnail">
+    `;
+
+    // Position at center
+    portraitBubble.style.position = 'absolute';
+    portraitBubble.style.transform = `translate(${centerX - bubbleSize / 2}px, ${centerY - bubbleSize / 2}px)`;
+
+    // Click to scroll to About section
+    portraitBubble.addEventListener('click', () => {
+        const aboutSection = document.getElementById('about');
+        if (aboutSection) {
+            aboutSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+
+    bubbleContainer.appendChild(portraitBubble);
+
+    // Store reference for animations (but not in main bubbles array to keep project animations separate)
+    portraitBubble.dataset.isPortrait = 'true';
 }
 
 // Create project sections with frame animations
@@ -501,6 +533,7 @@ function animateBubbles(progress) {
     const scale = 1 - progress * 0.3;
     const opacity = 1 - (progress * 0.8);
 
+    // Animate project bubbles
     bubbles.forEach((bubble, index) => {
         const originalX = parseFloat(bubble.dataset.originalX);
         const originalY = parseFloat(bubble.dataset.originalY);
@@ -516,6 +549,18 @@ function animateBubbles(progress) {
         bubble.style.transform = `translate(${currentX - bubbleSize / 2}px, ${currentY - bubbleSize / 2}px) scale(${scale})`;
         bubble.style.opacity = opacity;
     });
+
+    // Animate portrait bubble (center bubble fades out faster)
+    const portraitBubble = bubbleContainer.querySelector('.portrait-bubble');
+    if (portraitBubble) {
+        const originalX = parseFloat(portraitBubble.dataset.originalX);
+        const originalY = parseFloat(portraitBubble.dataset.originalY);
+        const portraitOpacity = 1 - (progress * 1.2); // Fade out faster
+        const portraitScale = 1 - progress * 0.4;
+
+        portraitBubble.style.transform = `translate(${originalX - bubbleSize / 2}px, ${originalY - bubbleSize / 2}px) scale(${Math.max(0.6, portraitScale)})`;
+        portraitBubble.style.opacity = Math.max(0, portraitOpacity);
+    }
 }
 
 // Handle bubble click - jump to project
