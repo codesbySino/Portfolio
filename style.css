@@ -97,8 +97,8 @@ body {
     position: relative;
     overflow: hidden;
     background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-warm) 100%);
-    /* Desktop top spacing for breathing room */
-    padding-top: clamp(4rem, 6vh, 6rem);
+    /* Desktop top spacing for generous breathing room from navigation */
+    padding-top: clamp(6rem, 12vh, 8rem);
     /* Reserve space for scroll indicator to prevent overlap with hero-intro text */
     padding-bottom: clamp(6rem, 12vh, 9rem);
 }
