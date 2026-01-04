@@ -328,7 +328,7 @@ body {
 }
 
 .portrait-thumbnail {
-    object-position: center top;
+    object-position: center center;
 }
 
 .scroll-indicator {

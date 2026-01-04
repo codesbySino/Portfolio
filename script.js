@@ -291,7 +291,7 @@ function createPortraitBubble(centerX, centerY, portraitSize) {
     portraitBubble.className = 'project-bubble portrait-bubble';
 
     portraitBubble.innerHTML = `
-        <img src="./about-photo.jpg" alt="About Me" class="bubble-thumbnail portrait-thumbnail">
+        <img src="./portrait-thumbnail.jpg" alt="About Me" class="bubble-thumbnail portrait-thumbnail">
     `;
 
     // Position at center using left/top so transform can be used for hover effects
