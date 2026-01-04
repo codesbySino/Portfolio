@@ -127,7 +127,7 @@ body {
 .hero-left {
     position: absolute;
     top: clamp(6rem, 12vh, 10rem);
-    left: clamp(4rem, 10vw, 12rem);
+    left: 3rem; /* Align with nav logo padding */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -794,7 +794,7 @@ body {
 
     .hero-left {
         top: clamp(5.5rem, 11vh, 9rem);
-        left: clamp(3rem, 8vw, 10rem);
+        left: 3rem; /* Align with nav logo padding */
     }
 }
 
@@ -823,7 +823,7 @@ body {
 
     .hero-left {
         top: clamp(5rem, 10vh, 8rem);
-        left: clamp(2.5rem, 6vw, 8rem);
+        left: 3rem; /* Align with nav logo padding */
     }
 }
 
@@ -852,7 +852,7 @@ body {
 
     .hero-left {
         top: clamp(5rem, 10vh, 8rem);
-        left: clamp(2rem, 5vw, 6rem);
+        left: 3rem; /* Align with nav logo padding */
     }
 
     .title-sans,
@@ -886,7 +886,7 @@ body {
 
     .hero-left {
         top: clamp(4.5rem, 9vh, 7rem);
-        left: clamp(1.5rem, 4vw, 5rem);
+        left: 3rem; /* Align with nav logo padding */
     }
 
     .title-sans,
