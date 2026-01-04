@@ -99,6 +99,8 @@ body {
     background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-warm) 100%);
     /* Desktop top spacing for breathing room */
     padding-top: clamp(4rem, 6vh, 6rem);
+    /* Reserve space for scroll indicator to prevent overlap with hero-intro text */
+    padding-bottom: clamp(6rem, 12vh, 9rem);
 }
 
 .homepage::before {
@@ -190,7 +192,8 @@ body {
 .hero-intro {
     text-align: center;
     margin-top: 2.5rem;
-    margin-bottom: 4rem;
+    /* Responsive margin to adapt to different viewport heights */
+    margin-bottom: clamp(2rem, 5vh, 4rem);
     opacity: 1;
     transition: opacity 0.5s var(--transition-smooth);
 }
@@ -907,6 +910,8 @@ body {
 
     .homepage {
         padding-top: 3rem;
+        /* Reserve space for scroll indicator on mobile */
+        padding-bottom: clamp(5rem, 10vh, 7rem);
     }
 
     .hero-wrapper {
@@ -949,7 +954,8 @@ body {
 
     .hero-intro {
         margin-top: 2rem;
-        margin-bottom: 3rem;
+        /* Responsive margin for mobile viewports */
+        margin-bottom: clamp(1.5rem, 4vh, 3rem);
     }
 
     .intro-greeting {
