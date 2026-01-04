@@ -227,7 +227,8 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.5s var(--transition-smooth);
+    /* Smooth hover transition */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     box-shadow:
         0 0 0 var(--bubble-backdrop-width) rgba(180, 175, 168, 0.6),
         0 4px 20px rgba(44, 40, 36, 0.08),
@@ -246,8 +247,9 @@ body {
 
 .project-bubble:hover {
     transform: scale(1.1);
+    /* Backdrop scales proportionally with 1.1x expansion */
     box-shadow:
-        0 0 0 var(--bubble-backdrop-width) rgba(180, 175, 168, 0.7),
+        0 0 0 calc(var(--bubble-backdrop-width) * 1.1) rgba(180, 175, 168, 0.7),
         0 8px 40px rgba(44, 40, 36, 0.12),
         0 2px 6px rgba(44, 40, 36, 0.08);
 }
@@ -314,15 +316,29 @@ body {
 }
 
 .portrait-bubble:hover {
+    transform: scale(1.1);
     border-color: var(--color-accent);
+    /* Backdrop scales proportionally with 1.1x expansion */
     box-shadow:
-        0 0 0 calc(var(--bubble-backdrop-width) * 1.2) rgba(180, 175, 168, 0.7),
+        0 0 0 calc(var(--bubble-backdrop-width) * 1.32) rgba(180, 175, 168, 0.7),
         0 12px 40px rgba(44, 40, 36, 0.2),
         0 4px 12px rgba(44, 40, 36, 0.12);
 }
 
 .portrait-thumbnail {
     object-position: center top;
+}
+
+/* Greeting text positioned below portrait bubble */
+.portrait-greeting {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 400;
+    color: var(--color-text);
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .scroll-indicator {
@@ -939,7 +955,8 @@ body {
         margin-top: 1rem;
     }
 
-    .intro-greeting {
+    .intro-greeting,
+    .portrait-greeting {
         font-size: clamp(1rem, 4vw, 1.2rem);
     }
 

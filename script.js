@@ -267,8 +267,6 @@ function createBubbles() {
         const bubble = document.createElement('div');
         bubble.className = 'project-bubble project-bubble-image';
         bubble.dataset.index = index;
-        bubble.dataset.originalX = x;
-        bubble.dataset.originalY = y;
 
         // Use first image of each project as thumbnail
         const thumbnailSrc = `./${project.imagePrefix}-1.jpg`;
@@ -276,9 +274,10 @@ function createBubbles() {
             <img src="${thumbnailSrc}" alt="${project.title}" class="bubble-thumbnail">
         `;
 
-        // Position bubble using transform for better performance
+        // Position bubble using left/top so transform can be used for hover effects
         bubble.style.position = 'absolute';
-        bubble.style.transform = `translate(${x - bubbleSize / 2}px, ${y - bubbleSize / 2}px)`;
+        bubble.style.left = `${x - bubbleSize / 2}px`;
+        bubble.style.top = `${y - bubbleSize / 2}px`;
         bubble.addEventListener('click', () => handleBubbleClick(index));
 
         bubbleContainer.appendChild(bubble);
@@ -290,17 +289,15 @@ function createBubbles() {
 function createPortraitBubble(centerX, centerY, portraitSize) {
     const portraitBubble = document.createElement('div');
     portraitBubble.className = 'project-bubble portrait-bubble';
-    portraitBubble.dataset.originalX = centerX;
-    portraitBubble.dataset.originalY = centerY;
-    portraitBubble.dataset.portraitSize = portraitSize;
 
     portraitBubble.innerHTML = `
         <img src="./about-photo.jpg" alt="About Me" class="bubble-thumbnail portrait-thumbnail">
     `;
 
-    // Position at center (using portrait bubble size for centering)
+    // Position at center using left/top so transform can be used for hover effects
     portraitBubble.style.position = 'absolute';
-    portraitBubble.style.transform = `translate(${centerX - portraitSize / 2}px, ${centerY - portraitSize / 2}px)`;
+    portraitBubble.style.left = `${centerX - portraitSize / 2}px`;
+    portraitBubble.style.top = `${centerY - portraitSize / 2}px`;
 
     // Click to jump to About section
     portraitBubble.addEventListener('click', () => {
@@ -312,8 +309,16 @@ function createPortraitBubble(centerX, centerY, portraitSize) {
 
     bubbleContainer.appendChild(portraitBubble);
 
-    // Store reference for animations (but not in main bubbles array to keep project animations separate)
-    portraitBubble.dataset.isPortrait = 'true';
+    // Create greeting text directly below portrait bubble
+    const greeting = document.createElement('p');
+    greeting.className = 'intro-greeting portrait-greeting';
+    greeting.textContent = "Hello! I'm Sinan.";
+    greeting.style.position = 'absolute';
+    greeting.style.left = '50%';
+    greeting.style.transform = 'translateX(-50%)';
+    // Position below portrait: center + half portrait size + spacing
+    greeting.style.top = `${centerY + portraitSize / 2 + 12}px`;
+    bubbleContainer.appendChild(greeting);
 }
 
 // Create project sections with frame animations
@@ -488,21 +493,18 @@ function handleScroll() {
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
 
-    // Homepage bubble animation
+    // Fade hero text and scroll indicator when scrolling (bubbles stay stationary)
     if (scrollY < windowHeight) {
         const progress = Math.min(scrollY / (windowHeight * 0.3), 1);
-        animateBubbles(progress);
-        
-        // Fade hero text, intro text, and scroll indicator
+
+        // Fade hero text and scroll indicator only (bubbles remain visible)
         if (progress > 0 && !hasScrolled) {
             hasScrolled = true;
             heroText.classList.add('hidden');
-            if (heroIntro) heroIntro.classList.add('hidden');
             scrollIndicator.classList.add('hidden');
         } else if (progress === 0 && hasScrolled) {
             hasScrolled = false;
             heroText.classList.remove('hidden');
-            if (heroIntro) heroIntro.classList.remove('hidden');
             scrollIndicator.classList.remove('hidden');
         }
     }
@@ -537,45 +539,6 @@ function handleScroll() {
     });
 }
 
-// Animate bubbles from circular to vertical arrangement
-function animateBubbles(progress) {
-    const centerX = bubbleContainer.offsetWidth / 2;
-    const centerY = bubbleContainer.offsetHeight / 2;
-    const bubbleSize = getBubbleSize();
-    const verticalSpacing = bubbleSize + 20;
-    const scale = 1 - progress * 0.3;
-    const opacity = 1 - (progress * 0.8);
-
-    // Animate project bubbles
-    bubbles.forEach((bubble, index) => {
-        const originalX = parseFloat(bubble.dataset.originalX);
-        const originalY = parseFloat(bubble.dataset.originalY);
-
-        // Calculate target position (vertical arrangement 1,2,3,4,5 from top to bottom)
-        const targetX = centerX;
-        const targetY = (index * verticalSpacing) + bubbleSize;
-
-        // Interpolate position
-        const currentX = originalX + (targetX - originalX) * progress;
-        const currentY = originalY + (targetY - originalY) * progress;
-
-        bubble.style.transform = `translate(${currentX - bubbleSize / 2}px, ${currentY - bubbleSize / 2}px) scale(${scale})`;
-        bubble.style.opacity = opacity;
-    });
-
-    // Animate portrait bubble (center bubble fades out faster)
-    const portraitBubble = bubbleContainer.querySelector('.portrait-bubble');
-    if (portraitBubble) {
-        const originalX = parseFloat(portraitBubble.dataset.originalX);
-        const originalY = parseFloat(portraitBubble.dataset.originalY);
-        const portraitSize = parseFloat(portraitBubble.dataset.portraitSize) || getPortraitBubbleSize();
-        const portraitOpacity = 1 - (progress * 1.2); // Fade out faster
-        const portraitScale = 1 - progress * 0.4;
-
-        portraitBubble.style.transform = `translate(${originalX - portraitSize / 2}px, ${originalY - portraitSize / 2}px) scale(${Math.max(0.6, portraitScale)})`;
-        portraitBubble.style.opacity = Math.max(0, portraitOpacity);
-    }
-}
 
 // Handle bubble click - jump to project
 function handleBubbleClick(index) {
