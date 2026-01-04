@@ -308,17 +308,6 @@ function createPortraitBubble(centerX, centerY, portraitSize) {
     });
 
     bubbleContainer.appendChild(portraitBubble);
-
-    // Create greeting text directly below portrait bubble
-    const greeting = document.createElement('p');
-    greeting.className = 'intro-greeting portrait-greeting';
-    greeting.textContent = "Hello! I'm Sinan.";
-    greeting.style.position = 'absolute';
-    greeting.style.left = '50%';
-    greeting.style.transform = 'translateX(-50%)';
-    // Position below portrait: center + half portrait size + spacing
-    greeting.style.top = `${centerY + portraitSize / 2 + 12}px`;
-    bubbleContainer.appendChild(greeting);
 }
 
 // Create project sections with frame animations
